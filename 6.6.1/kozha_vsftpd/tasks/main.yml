@@ -1,0 +1,11 @@
+---
+# tasks file for kozha_vsftpd
+- name: install vsftpd
+  ansible.builtin.apt:
+    name: vsftpd
+    state: present  
+- name: Start and boot server  
+  ansible.builtin.service:
+    name: vsftpd
+    state: started
+    enabled: yes

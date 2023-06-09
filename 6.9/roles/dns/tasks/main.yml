@@ -1,0 +1,21 @@
+---
+- name: Install dnsmasq package
+  ansible.builtin.apt:
+    name: dnsmasq
+    state: present
+
+- name: Configure dnsmasq
+  vars:
+    dnsmasq_config:
+      - {'regexp': '^listen-address=', 'line': 'listen-address={{ dnsmasq_listen_address }}'}
+      - {'regexp': '^port=', 'line': 'port={{ dnsmasq_listen_port }}'}
+      - {'regexp': '^#server=', 'line': 'server={{ dnsmasq_dns_servers }}'}
+      - {'regexp': '^#address=/example.com/127.0.0.1', 'line': 'address=/example.com/127.0.0.1'}
+  ansible.builtin.lineinfile:
+    path: /etc/dnsmasq.conf
+    regexp: "{{ dnsmasq_config_item['regexp'] }}"
+    line: "{{ dnsmasq_config_item['line'] }}"
+  loop: "{{ dnsmasq_config }}"
+  loop_control:
+    loop_var: dnsmasq_config_item
+  notify: Restart dnsmasq

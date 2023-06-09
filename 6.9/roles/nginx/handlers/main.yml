@@ -1,0 +1,12 @@
+---
+- name: Reload nginx
+  service:
+    name: nginx
+    state: reloaded
+    listen: Reload Nginx configuration
+    
+- name: Restart PHP-FPM
+  become: true
+  service:
+    name: php7.4-fpm
+    state: restarted

@@ -1,0 +1,5 @@
+---
+# defaults file for dns
+dnsmasq_listen_address: 127.0.0.1
+dnsmasq_listen_port: 9053
+dnsmasq_dns_servers: 8.8.8.8

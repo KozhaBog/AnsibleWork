@@ -1,0 +1,5 @@
+---
+- name: dnsmasq server
+  hosts: test
+  roles:
+    - dns

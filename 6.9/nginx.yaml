@@ -1,0 +1,6 @@
+- name: Configure
+  hosts: test
+  become: yes
+
+  roles:
+    - nginx

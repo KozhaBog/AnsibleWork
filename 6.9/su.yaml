@@ -1,0 +1,32 @@
+---
+- hosts: test
+  gather_facts: yes
+  become: yes
+
+  tasks:
+  - name: Create superusers group
+    group:
+      name: superusers
+      state: present
+  
+  - name: Install sudo
+    apt:
+      name: sudo
+      state: present
+
+  - name: Add user2 and user3 to superusers
+    user:
+      name: "{{ item }}"
+      groups: superusers
+    loop:
+      - user2
+      - user3
+
+  - name: Configure sudo for superusers
+    lineinfile:
+      path: /etc/sudoers
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      validate: "visudo -cf %s"
+    with_items:
+      - { regexp: "^\\%superusers\\s+ALL=", line: "%superusers ALL=(ALL) NOPASSWD:ALL" }
